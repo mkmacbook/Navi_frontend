@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVI - AI 통합 플랫폼</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* 기본 설정 및 글꼴 */
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+            background-color: #ffffff;
+        }
+        h1 { font-weight: 700; font-size: 2.5rem; color: #222; }
+        h2 { font-weight: 500; font-size: 1.8rem; margin-bottom: 40px; }
+        p { font-size: 1rem; line-height: 1.5; color: #555; }
+        
+        /* 섹션 공통 스타일 */
+        section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* 1. 최상단 영역 (Hero Header) */
+        .hero-header {
+            padding-top: 80px;
+            padding-bottom: 20px;
+            background-image: linear-gradient(to bottom, #f0f4ff, #ffffff); 
+        }
+        .hero-header p {
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        .hero-header button {
+            background-color: #4f46e5; /* 보라색 버튼 */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .hero-header button:hover {
+            background-color: #3b31a8;
+        }
+        
+        /* 2. AI 툴 자동 스크롤 영역 */
+        .tool-marquee {
+            overflow: hidden; 
+            white-space: nowrap;
+            padding: 30px 0;
+            margin: 40px 0;
+        }
+        .marquee-content {
+            display: flex;
+            align-items: center;
+            animation: marquee 25s linear infinite; 
+        }
+        .marquee-content img {
+            height: 25px; 
+            margin: 0 40px; 
+            opacity: 0.6;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); } 
+        }
+
+        /* 3. 문제 제기 영역 */
+        .problem-statement { padding-top: 30px; }
+        .problem-statement h2 { font-weight: 400; font-size: 1.5rem; }
+        .problem-cards { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        .problem-card { flex: 1; max-width: 45%; background-color: #f2f4ff; border-radius: 12px; padding: 20px; text-align: left; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .problem-card strong { display: block; color: #4f46e5; margin-bottom: 8px; font-size: 1.1rem; }
+        
+        /* 4. 맞춤형 추천 영역 */
+        .recommendation { padding-top: 0; margin-top: 60px; }
+        .rec-header { color: #4f46e5; font-weight: 500; margin-bottom: 10px; border: 1px solid #4f46e5; display: inline-block; padding: 5px 15px; border-radius: 20px; font-size: 0.9rem; }
+        .rec-content-box { display: flex; gap: 20px; margin-top: 40px; }
+        .rec-item { flex: 1; background-color: #ffffff; border: 1px solid #eee; border-radius: 10px; padding: 20px; text-align: left; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+
+        /* 5. 아이콘 3개 영역 */
+        .innovation h2 { color: #4f46e5; font-weight: 700; font-size: 1.7rem; margin-top: 10px; }
+        .innovation-grid { display: flex; justify-content: space-around; margin-top: 40px; }
+        .innovation-item { max-width: 30%; }
+        .innovation-item .icon { font-size: 3rem; color: #4f46e5; margin-bottom: 10px; }
+        .innovation-item p { font-size: 0.9rem; color: #777; }
+
+        /* 6. 가격 플랜 영역 */
+        .pricing { background-color: #fafafa; border-top: 1px solid #eee; padding-bottom: 80px; }
+        .pricing h2 { font-size: 1.8rem; font-weight: 500; margin-bottom: 60px; }
+        .plans-container { display: flex; justify-content: center; gap: 30px; }
+        .plan { width: 40%; padding: 40px 30px; border-radius: 15px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); text-align: left; }
+        .plan h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 10px; }
+        .plan .price { font-size: 2rem; font-weight: 700; color: #4f46e5; margin-bottom: 30px; }
+        .plan .price small { font-size: 1rem; font-weight: 400; color: #555; }
+        .plan button { width: 100%; padding: 15px 0; border: none; border-radius: 8px; font-size: 1.1rem; font-weight: 500; cursor: pointer; transition: opacity 0.3s; }
+        .plan button:hover { opacity: 0.9; }
+
+        .basic-plan { background-color: #f2f4ff; border: 2px solid #4f46e5; }
+        .basic-plan button { background-color: #4f46e5; color: white; }
+        .premium-plan { background-color: #ffffff; border: 1px solid #ccc; }
+        .premium-plan button { background-color: #aaa; color: white; }
+
+        /* 푸터 */
+        footer { padding: 30px 20px; text-align: center; font-size: 0.8rem; color: #999; border-top: 1px solid #eee; }
+        footer .logo { font-weight: 700; color: #4f46e5; font-size: 1.2rem; margin-bottom: 10px; display: block; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            section { padding: 40px 15px; }
+            .problem-cards, .plans-container, .rec-content-box, .innovation-grid { flex-direction: column; }
+            .problem-card, .plan, .innovation-item { max-width: 100%; width: 100%; margin-bottom: 20px; }
+            .plan { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero-header">
+        <h1>혹시 아직도 GPT만 쓰고 계신가요?</h1>
+        <p>NAVI를 통해 AI 활용의 새로운 패러다임을 경험하세요.</p>
+        <button onclick="window.location.href='input.html'">AI 시작하기</button> 
+    </section>
+    
+    <section class="tool-marquee">
+        <div class="marquee-content">
+            <img src="https://via.placeholder.com/100x25?text=Perplexity" alt="Perplexity">
+            <img src="https://via.placeholder.com/100x25?text=Gemini" alt="Gemini">
+            <img src="https://via.placeholder.com/100x25?text=ChatGPT" alt="ChatGPT">
+            <img src="https://via.placeholder.com/100x25?text=Claude" alt="Claude">
+            <img src="https://via.placeholder.com/100x25?text=Gamma" alt="Gamma">
+            
+            <img src="https://via.placeholder.com/100x25?text=Perplexity" alt="Perplexity" aria-hidden="true">
+            <img src="https://via.placeholder.com/100x25?text=Gemini" alt="Gemini" aria-hidden="true">
+            <img src="https://via.placeholder.com/100x25?text=ChatGPT" alt="ChatGPT" aria-hidden="true">
+            <img src="https://via.placeholder.com/100x25?text=Claude" alt="Claude" aria-hidden="true">
+            <img src="https://via.placeholder.com/100x25?text=Gamma" alt="Gamma" aria-hidden="true">
+        </div>
+    </section>
+
+    <section class="problem-statement">
+        <h2>왜 우리는 아직도 AI를 잘 활용하지 못할까요?</h2>
+        <div class="problem-cards">
+            <div class="problem-card">
+                <strong>AI 접근성을 넘어서는 대상의 어려움</strong>
+                <p>수많은 AI 서비스들의 복잡한 사용법과 접근 경로 때문에 필요한 도구를 찾고 사용하는 데 어려움을 겪으시나요?</p>
+            </div>
+            <div class="problem-card">
+                <strong>차별화된 활용 방안이 없는 경우</strong>
+                <p>단순 질문/답변 수준을 넘어 내 업무에 직접 적용할 맞춤형 AI가 없어 활용 가치를 느끼지 못하고 계신가요?</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="recommendation">
+        <span class="rec-header">NEW START</span>
+        <h2>당신에게 꼭 맞는 AI와 플랫폼을 추천드립니다.</h2>
+        <div class="rec-content-box">
+            <div class="rec-item">
+                <h3>맞춤형 AI 솔루션</h3>
+                <p>고객의 목적에 맞는 AI 도구 조합과 워크플로우를 구성하여 최적의 비즈니스 효과를 제공합니다.</p>
+                </div>
+            <div class="rec-item">
+                <h3>다양한 활용 예시</h3>
+                <p>다른 사용자들의 성공 사례를 통해 영감을 얻고, 당신의 비즈니스에 바로 적용할 수 있는 가이드를 제공합니다.</p>
+                </div>
+            <div class="rec-item">
+                <h3>실시간 연구 기반 업데이트</h3>
+                <p>최신 AI 트렌드를 반영하여 서비스를 지속적으로 개선하고, 새로운 기능과 도구를 빠르게 제공합니다.</p>
+                </div>
+        </div>
+        <p style="font-size: 1.3rem; margin-top: 60px;"><strong>50가지 AI 도구를 단 1분만에 전문가처럼 사용해요</strong></p>
+    </section>
+
+    <section class="innovation">
+        <h3>NAVI가 만들어낸</h3>
+        <h2>AI 하이퍼 초월 혁신</h2>
+        <div class="innovation-grid">
+            <div class="innovation-item">
+                <span class="icon">⏰</span> 
+                <h4>AI 접근 시간 90% 단축</h4>
+                <p>복잡한 설정 없이 바로 사용</p>
+            </div>
+            <div class="innovation-item">
+                <span class="icon">🤖</span>
+                <h4>맞춤형 AI 에이전트</h4>
+                <p>나를 위한 최적의 조합 제공</p>
+            </div>
+            <div class="innovation-item">
+                <span class="icon">📢</span>
+                <h4>효율 200% 증대</h4>
+                <p>업무 효율 극대화</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing">
+        <h2>지금 바로 수많은 AI 툴의 능력을 <br>내 것으로 만들어보세요.</h2>
+        <div class="plans-container">
+            <div class="plan basic-plan">
+                <h3>베이직 플랜</h3>
+                <div class="price">9,900원<small> / 월</small></div>
+                <p style="margin-bottom: 20px;">AI 툴 핵심 기능 사용, 월 100회 요청</p>
+                <button>플랜 선택하기</button>
+            </div>
+            <div class="plan premium-plan">
+                <h3>프리미엄 플랜</h3>
+                <div class="price">29,900원<small> / 월</small></div>
+                <p style="margin-bottom: 20px;">모든 기능 무제한 사용, 전담 지원</p>
+                <button>플랜 선택하기</button>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <span class="logo">NAVI</span>
+        <p>&copy; 2024 NAVI. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

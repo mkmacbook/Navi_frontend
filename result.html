@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVI - AI 생성 결과</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 공통: 헤더 */
+        header {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .navi-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000080;
+            font-style: italic;
+        }
+
+        /* 공통: 사용자 질문 박스 (상단 회색 박스) */
+        .user-query-section {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .query-box {
+            background-color: #f2f4ff; /* 연한 회색/보라색 배경 */
+            border: 1px solid #dde1f0;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        /* --- 화면 1: 로딩 스크린 --- */
+        #loading-screen {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+        .loading-icon {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #4f46e5;
+            border-top: 3px solid transparent; /* 뚫린 부분 */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .loading-text {
+            color: #555;
+            font-size: 1rem;
+        }
+
+        /* --- 화면 2: 결과 컨텐츠 (처음엔 숨김) --- */
+        #result-content {
+            display: none; /* 자바스크립트로 보여줄 예정 */
+            flex-grow: 1;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 60px;
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .answer-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 0 20px;
+            margin-top: 40px;
+            text-align: left;
+            box-sizing: border-box;
+        }
+        
+        .ai-profile {
+            margin-bottom: 20px;
+        }
+        .ai-logo-small {
+            width: 30px; 
+            vertical-align: middle;
+        }
+
+        .answer-text {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #222;
+            white-space: pre-wrap; /* 줄바꿈 유지 */
+        }
+        .answer-text strong {
+            font-weight: 700;
+            color: #000;
+        }
+
+        /* 복사하기 버튼 */
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 1px solid #eee;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background: white;
+        }
+        .copy-btn:hover { background-color: #f9f9f9; color: #555; }
+
+        /* 다시 검색 버튼 */
+        .retry-section {
+            margin-top: 80px;
+            text-align: center;
+        }
+        .retry-text { font-size: 0.9rem; color: #666; margin-bottom: 10px; }
+        .retry-btn {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 12px 30px;
+            border-radius: 30px;
+            color: #555;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .retry-btn:hover { background-color: #eee; }
+
+        /* --- 하단 하이라이트 배너 (NAVI Pick) --- */
+        .highlight-banner {
+            margin-top: 80px;
+            width: 100%;
+            background-color: #ffe8cc; /* 살구색 배경 */
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .banner-content {
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        /* 왼쪽 큰 아이콘 (꽃 모양) */
+        .banner-icon {
+            font-size: 5rem;
+            color: #e07a5f; 
+            /* 실제 이미지가 없어서 텍스트로 대체하지만 이미지 태그로 교체 가능 */
+            line-height: 1;
+        }
+        
+        .banner-text-group {
+            text-align: left;
+        }
+        .banner-label {
+            color: #000080;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .banner-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0 0 10px 0;
+        }
+        .banner-desc {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .feedback-btns {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .feedback-btn {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .feedback-btn:hover { color: #333; }
+
+        /* 하단 로고 마키 (재사용) */
+        .tool-marquee {
+            padding: 40px 0;
+            background-color: #fff;
+            text-align: center;
+        }
+        .logo-row {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            opacity: 0.7;
+        }
+        .logo-row img { height: 25px; }
+
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* 모바일 대응 */
+        @media (max-width: 768px) {
+            .banner-content { flex-direction: column; text-align: center; }
+            .banner-text-group { text-align: center; }
+            .feedback-btns { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navi-logo">NAVI</div>
+    </header>
+
+    <div class="user-query-section">
+        <div class="query-box" id="userPromptDisplay">
+            프롬프트 로딩중...
+        </div>
+    </div>
+
+    <div id="loading-screen">
+        <div class="loading-icon"></div> <div class="navi-logo" style="width: 30px; margin-bottom: 10px;">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 22H22L12 2Z" stroke="#000080" stroke-width="2"/>
+            </svg>
+        </div>
+        <div class="loading-text">Claude Sonnet 4.5 로 답변을 생성하는 중...</div>
+    </div>
+
+    <div id="result-content">
+        
+        <div class="answer-container">
+            <div class="ai-profile">
+                <span style="font-size: 1.5rem; color:#000080;">⟁</span> 
+            </div>
+
+            <div class="answer-text">
+지속가능성과 혁신을 핵심으로 하는 브랜드를 위한 인스타그램 캠페인 문구 3개를 제안해드리겠습니다.
+
+<strong>1. "내일을 위한 선택, 오늘부터 시작됩니다"</strong>
+우리는 단순히 제품을 만드는 것이 아니라, 지속 가능한 미래를 설계합니다. 혁신적인 기술과 환경을 생각하는 마음이 만나 탄생한 우리의 솔루션. 당신의 작은 선택이 만드는 큰 변화를 경험해보세요.
+#지속가능한혁신 #내일을위한선택
+
+<strong>2. "자연과 기술이 만나는 지점, 그곳에 우리가 있습니다"</strong>
+혁신은 자연을 파괴하는 것이 아니라, 자연과 조화를 이루는 것입니다. 우리는 최첨단 기술로 지구를 보호하고, 더 나은 내일을 약속합니다. 지속 가능성과 혁신, 두 가치가 하나로 어우러진 우리의 여정에 함께하세요.
+#자연과기술의조화 #지속가능한미래
+
+<strong>3. "변화는 선택이 아닌 책임입니다"</strong>
+우리는 혁신을 통해 환경에 대한 책임을 다합니다. 한계를 뛰어넘는 기술력으로 탄소 발자국을 줄이고, 순환 경제를 실현하며, 다음 세대에게 더 나은 지구를 물려주기 위해 노력합니다. 지속 가능한 혁신, 그것이 우리의 방식입니다.
+#책임있는혁신 #지속가능성
+
+각 문구는 감성적인 호소와 함께 브랜드의 전문성과 진정성을 담아 타겟 고객과의 깊은 연결을 만들어낼 수 있도록 구성했습니다.
+            </div>
+
+            <div class="copy-btn">
+                📋 복사하기
+            </div>
+        </div>
+
+        <div class="retry-section">
+            <div class="retry-text">이 추천이 마음에 들지 않으신가요?</div>
+            <button class="retry-btn" onclick="window.location.href='input.html'">더 나은 결과를 위해 다시 검색해보세요</button>
+        </div>
+
+        <div class="highlight-banner">
+            <div class="banner-content">
+                <div class="banner-icon">❋</div>
+                
+                <div class="banner-text-group">
+                    <div class="banner-label">NAVI Pick!</div>
+                    <div class="banner-title">Claude Sonnet 4.5</div>
+                    <div class="banner-desc">창의적인 마케팅 문구 작성에 최적화된 AI 엔진</div>
+                    
+                    <div class="feedback-btns">
+                        <div class="banner-label" style="color:#555; margin:0;">이 답변이 만족스러우신가요?</div>
+                        <div class="feedback-btn">😊 만족해요</div>
+                        <div class="feedback-btn">☹️ 아쉬워요</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-marquee">
+            <div class="logo-row">
+                <img src="https://via.placeholder.com/100x25?text=Perplexity" alt="Perplexity">
+                <img src="https://via.placeholder.com/100x25?text=Gemini" alt="Gemini">
+                <img src="https://via.placeholder.com/100x25?text=ChatGPT" alt="ChatGPT">
+                <img src="https://via.placeholder.com/100x25?text=Claude" alt="Claude">
+                <img src="https://via.placeholder.com/100x25?text=Gamma" alt="Gamma">
+            </div>
+        </div>
+
+        <footer>
+            <div class="navi-logo" style="font-size: 1.2rem; margin-bottom:10px;">NAVI</div>
+            <div style="font-weight:700; margin-bottom:5px;">상황별 최적 AI 툴 가이드</div>
+            <p>All right reserved © 2025 NAVI IVAN</p>
+            <div style="margin-top: 15px;">
+                <span style="margin: 0 10px;">소개</span>
+                <span style="margin: 0 10px;">개인정보처리방침</span>
+                <span style="margin: 0 10px;">이용약관</span>
+                <span style="margin: 0 10px;">문의하기</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 페이지 로드 시 실행
+        window.onload = function() {
+            // 1. URL에서 프롬프트 텍스트 가져오기
+            const params = new URLSearchParams(window.location.search);
+            const promptText = params.get('prompt');
+
+            // 2. 가져온 텍스트를 상단 박스에 넣기
+            if(promptText) {
+                document.getElementById('userPromptDisplay').innerText = promptText;
+            }
+
+            // 3. 로딩 시뮬레이션 (2.5초 뒤에 로딩화면 끄고 결과화면 켜기)
+            setTimeout(function() {
+                document.getElementById('loading-screen').style.display = 'none'; // 로딩 숨김
+                document.getElementById('result-content').style.display = 'flex'; // 결과 보임
+            }, 2500); // 2500ms = 2.5초
+        }
+    </script>
+</body>
+</html>

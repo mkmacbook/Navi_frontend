@@ -1,0 +1,85 @@
+/* 모든 요소에 적용될 기본 스타일 */
+body {
+    font-family: "Noto Sans KR", sans-serif; /* 한국어 글꼴 설정 */
+    margin: 0; /* 페이지 가장자리 여백 제거 */
+    padding: 0;
+    text-align: center; /* 기본 텍스트 중앙 정렬 */
+}
+
+/* 주요 내용이 들어갈 섹션의 공통 스타일 */
+section {
+    padding: 60px 20px; /* 위아래 여백 */
+}
+
+/* 내용을 가운데로 모으는 컨테이너 */
+.container {
+    max-width: 1200px; /* 최대 가로 폭 */
+    margin: 0 auto; /* 자동으로 가운데 정렬 */
+}
+.tool-marquee {
+    /* 스크롤 영역 밖의 내용을 숨김 */
+    overflow: hidden; 
+    white-space: nowrap; /* 모든 로고를 한 줄에 표시 */
+    padding: 20px 0;
+}
+
+.marquee-content {
+    /* flex를 사용하여 로고들을 가로로 나열 */
+    display: flex; 
+    align-items: center;
+    /* 이 요소가 애니메이션을 통해 움직이게 됩니다. */
+    display: inline-block; 
+    /* 애니메이션 적용: marquee라는 움직임을 30초 동안 무한히 반복 */
+    animation: marquee 30s linear infinite; 
+}
+
+.marquee-content img {
+    height: 30px; /* 로고 크기 */
+    margin: 0 40px; /* 로고 간 간격 */
+}
+/* 'marquee'라는 이름의 움직임을 정의 */
+@keyframes marquee {
+    /* 0% 상태: 움직임 시작. 원래 위치 (0%) */
+    0% {
+        transform: translateX(0%); 
+    }
+    /* 100% 상태: 움직임 끝. 왼쪽으로 50% 이동 */
+    100% {
+        transform: translateX(-50%); 
+    }
+}
+.plans-container {
+    /* 박스들을 가로로 나란히 배치 */
+    display: flex; 
+    /* 공간이 부족하면 자동으로 줄바꿈 처리 */
+    flex-wrap: wrap; 
+    /* 박스들 사이에 여백을 균등하게 */
+    justify-content: space-around; 
+    margin-top: 30px;
+}
+
+.plan {
+    width: 45%; /* 전체 가로 폭의 약 45% 차지 */
+    padding: 30px;
+    border-radius: 15px; /* 둥근 모서리 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    margin: 10px;
+}
+
+/* 베이직 플랜 (왼쪽)의 배경과 버튼 색상 */
+.basic-plan {
+    background-color: #e6e9ff; /* 연한 보라색 배경 */
+}
+.basic-plan button {
+    background-color: #4f46e5; /* 진한 보라색 버튼 */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+/* 프리미엄 플랜 (오른쪽)의 배경과 버튼 색상 */
+.premium-plan {
+    background-color: #f0f0f0; /* 연한 회색 배경 */
+}
+/* ... premium-plan의 버튼 스타일링 ... */
