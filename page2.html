@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NAVI - AI 추천</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page page2">
+        <!-- 왼쪽 상단 NAVI 글자 로고 -->
+        <a href="index.html" class="logo-text-only" style="text-decoration: none; color: #1a3c8c;">NAVI</a>
+
+        <main class="input-content">
+            <!-- 가운데 큰 로고 (글자 포함) - 위로 이동 -->
+            <div class="navi-logo-with-text">
+                <img src="images/logo_navi.svg" alt="NAVI" style="height: 60px;">
+            </div>
+            
+            <h2 class="input-title">
+                도움이 필요한 사항을 입력하면<br>
+                최적의 AI 와 프롬프트를 추천해드릴게요!
+            </h2>
+
+            <!-- 연한 보라색 칩들 -->
+            <div class="suggestion-chips">
+                <button class="chip" onclick="setInputText('API 기능 통계내 초안 작성하기')">API 기능 통계내 초안 작성하기</button>
+                <button class="chip" onclick="setInputText('논문 참고문헌 스타일을 자동 변경하기')">논문 참고문헌 스타일을 자동 변경하기</button>
+                <button class="chip" onclick="setInputText('업로드용 꿀팁 이미지 생성하기')">업로드용 꿀팁 이미지 생성하기</button>
+            </div>
+
+            <!-- 입력창 -->
+            <div class="input-box">
+                <button class="add-button">
+                    <img src="images/ic_plus.svg" alt="추가" style="width: 20px;">
+                </button>
+                <textarea id="userInput" placeholder="인스타 마케팅 문구 초안 작성하기" rows="1"></textarea>
+                <button class="submit-button" onclick="submitQuery()">
+                    <img src="images/ic_arrow.svg" alt="전송" style="width: 24px;">
+                </button>
+            </div>
+        </main>
+
+        <!-- 푸터 -->
+        <footer>
+            <div class="footer-logo-icon">
+                <img src="images/logo_navi_black.svg" alt="NAVI" style="height: 40px;">
+            </div>
+            <p class="footer-tagline">상황별 최적 AI 툴 가이드</p>
+            <p class="footer-copyright">All right reserved © 2025 NAVI IVAN</p>
+            <div class="footer-links">
+                <a href="#">소개</a>
+                <a href="#">개인정보처리방침</a>
+                <a href="#">이용약관</a>
+                <a href="#">문의하기</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 칩 클릭 시 텍스트 입력
+        function setInputText(text) {
+            document.getElementById('userInput').value = text;
+        }
+        
+        // 전송 버튼 클릭 시
+        function submitQuery() {
+            const userInput = document.getElementById('userInput').value.trim();
+            if (userInput) {
+                // 입력한 텍스트를 localStorage에 저장
+                localStorage.setItem('userQuery', userInput);
+                // page3으로 이동
+                window.location.href = 'page3.html';
+            } else {
+                alert('내용을 입력해주세요.');
+            }
+        }
+        
+        // Enter 키로도 전송 가능하게
+        document.getElementById('userInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitQuery();
+            }
+        });
+    </script>
+</body>
+</html>
