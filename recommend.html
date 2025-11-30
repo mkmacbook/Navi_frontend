@@ -194,6 +194,7 @@
         }
         .footer-links a { color: #777; text-decoration: none; margin: 0 10px; }
     </style>
+    <script defer src="js/recommend.js"></script>
 </head>
 <body>
 
@@ -213,7 +214,7 @@
         <div class="card">
             <div class="card-header">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" class="ai-logo" alt="GPT">
-                <span class="ai-name">ChatGPT</span>
+                <span class="ai-name">OpenAI GPT</span>
             </div>
             <div class="card-body">
                 자연스러운 대화형 AI로 창의적인 마케팅 문구 작성에 최적화되어 있습니다. 다양한 톤앤매너 조절이 가능합니다.
@@ -230,13 +231,13 @@
                 </div>
                 <span class="action-link">저장하기</span>
             </div>
-            <button class="result-btn" onclick="goResult('prompt-gpt')">위 프롬프트로 결과보기</button>
+            <button class="result-btn" data-prompt-id="prompt-gpt">위 프롬프트로 결과보기</button>
         </div>
 
         <div class="card">
             <div class="card-header">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Claude_Ai.svg" class="ai-logo" alt="Claude">
-                <span class="ai-name">Claude</span>
+                <span class="ai-name">Anthropic Claude</span>
             </div>
             <div class="card-body">
                 장문의 맥락 이해와 세밀한 뉘앙스 조절이 탁월합니다. 브랜드 가이드라인을 반영한 전문적인 카피 작성에 적합합니다.
@@ -259,7 +260,7 @@
         <div class="card">
             <div class="card-header">
                 <div style="font-size:1.5rem; margin-right:10px;">🟣</div>
-                <span class="ai-name">Jasper</span>
+                <span class="ai-name">Google Gemini</span>
             </div>
             <div class="card-body">
                 마케팅 전문 AI 툴로, 50개 이상의 템플릿을 제공합니다. SEO 최적화 기능도 갖추고 있어 마케팅에 특화되어 있습니다.
@@ -271,12 +272,12 @@
             </div>
             <div class="prompt-box">
                 <div class="prompt-header">🎯 최적 프롬프트 <span style="cursor:pointer">📋</span></div>
-                <div class="prompt-text" id="prompt-jasper">
+                <div class="prompt-text" id="prompt-gemini">
                     제품명: [당신의 제품명], 타겟: [밀레니얼 세대], 목표: [브랜드 인지도 향상]. 인스타그램 캐러셀 포스트용 문구를 작성해줘.
                 </div>
                 <span class="action-link">수정하기</span>
             </div>
-            <button class="result-btn" onclick="goResult('prompt-jasper')">위 프롬프트로 결과보기</button>
+            <button class="result-btn" onclick="goResult('prompt-gemini')">위 프롬프트로 결과보기</button>
         </div>
     </div>
 
@@ -296,29 +297,6 @@
             <a href="#">문의하기</a>
         </div>
     </footer>
-
-    <script>
-        window.onload = function() {
-            const params = new URLSearchParams(window.location.search);
-            const query = params.get('q'); 
-
-            if (query) {
-                document.getElementById('result-title').innerText = `“${query}”`;
-            } else {
-                document.getElementById('result-title').innerText = "“선택된 주제가 없습니다”";
-            }
-        }
-
-        // 결과 페이지로 이동하는 함수
-        function goResult(elementId) {
-            const promptText = document.getElementById(elementId).innerText;
-            if (promptText) {
-                window.location.href = `result.html?prompt=${encodeURIComponent(promptText)}`;
-            } else {
-                alert("오류: 프롬프트 내용을 찾을 수 없습니다.");
-            }
-        }
-    </script>
 
 </body>
 </html>

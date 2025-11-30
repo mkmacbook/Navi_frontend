@@ -260,7 +260,7 @@
                 <path d="M12 2L2 22H22L12 2Z" stroke="#000080" stroke-width="2"/>
             </svg>
         </div>
-        <div class="loading-text">Claude Sonnet 4.5 로 답변을 생성하는 중...</div>
+        <div class="loading-text">Google Gemini 2.5 Flash 로 답변을 생성하는 중...</div>
     </div>
 
     <div id="result-content">
@@ -304,8 +304,12 @@
                 
                 <div class="banner-text-group">
                     <div class="banner-label">NAVI Pick!</div>
-                    <div class="banner-title">Claude Sonnet 4.5</div>
-                    <div class="banner-desc">창의적인 마케팅 문구 작성에 최적화된 AI 엔진</div>
+                    <div class="banner-title">Google Gemini 2.5 Flash</div>
+                    <!-- <div class="banner-desc">창의적인 마케팅 문구 작성에 최적화된 AI 엔진</div> -->
+                    <!-- inline run은 아직 gemini만 서포트하고, -->
+                    <!-- 특히 banner-desc는 추천 이유를 recommend에서 가지고 온 후 다듬어야 하기 때문에 -->
+                    <!-- banner-desc는 생략해도 좋을 것 같습니다. -->
+                    <!-- 예시로 chatgpt로고로 디자인한 banner-icon도 삭제하는게 좋을까요?-->
                     
                     <div class="feedback-btns">
                         <div class="banner-label" style="color:#555; margin:0;">이 답변이 만족스러우신가요?</div>
@@ -338,25 +342,6 @@
             </div>
         </footer>
     </div>
-
-    <script>
-        // 페이지 로드 시 실행
-        window.onload = function() {
-            // 1. URL에서 프롬프트 텍스트 가져오기
-            const params = new URLSearchParams(window.location.search);
-            const promptText = params.get('prompt');
-
-            // 2. 가져온 텍스트를 상단 박스에 넣기
-            if(promptText) {
-                document.getElementById('userPromptDisplay').innerText = promptText;
-            }
-
-            // 3. 로딩 시뮬레이션 (2.5초 뒤에 로딩화면 끄고 결과화면 켜기)
-            setTimeout(function() {
-                document.getElementById('loading-screen').style.display = 'none'; // 로딩 숨김
-                document.getElementById('result-content').style.display = 'flex'; // 결과 보임
-            }, 2500); // 2500ms = 2.5초
-        }
-    </script>
+    <script src="js/result.js"></script>
 </body>
 </html>
