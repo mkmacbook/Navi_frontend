@@ -24,21 +24,23 @@
 
             <!-- 연한 보라색 칩들 -->
             <div class="suggestion-chips">
-                <button class="chip" onclick="setInputText('API 기능 통계내 초안 작성하기')">API 기능 통계내 초안 작성하기</button>
-                <button class="chip" onclick="setInputText('논문 참고문헌 스타일을 자동 변경하기')">논문 참고문헌 스타일을 자동 변경하기</button>
-                <button class="chip" onclick="setInputText('업로드용 꿀팁 이미지 생성하기')">업로드용 꿀팁 이미지 생성하기</button>
+                <button class="chip">API 기능 통계내 초안 작성하기</button>
+                <button class="chip">논문 참고문헌 스타일을 자동 변경하기</button>
+                <button class="chip">업로드용 꿀팁 이미지 생성하기</button>
             </div>
 
             <!-- 입력창 -->
-            <div class="input-box">
-                <button class="add-button">
-                    <img src="images/ic_plus.svg" alt="추가" style="width: 20px;">
-                </button>
-                <textarea id="userInput" placeholder="인스타 마케팅 문구 초안 작성하기" rows="1"></textarea>
-                <button class="submit-button" onclick="submitQuery()">
-                    <img src="images/ic_arrow.svg" alt="전송" style="width: 24px;">
-                </button>
-            </div>
+            <form id="queryForm">
+                <div class="input-box">
+                    <button type="button" class="add-button">
+                        <img src="images/ic_plus.svg" alt="추가" style="width: 20px;">
+                    </button>
+                    <textarea id="userInput" placeholder="인스타 마케팅 문구 초안 작성하기" rows="1"></textarea>
+                    <button type="submit" class="submit-button">
+                        <img src="images/ic_arrow.svg" alt="전송" style="width: 24px;">
+                    </button>
+                </div>
+            </form>
         </main>
 
         <!-- 푸터 -->
@@ -57,32 +59,71 @@
         </footer>
     </div>
 
-    <script>
-        // 칩 클릭 시 텍스트 입력
-        function setInputText(text) {
-            document.getElementById('userInput').value = text;
-        }
-        
-        // 전송 버튼 클릭 시
-        function submitQuery() {
-            const userInput = document.getElementById('userInput').value.trim();
-            if (userInput) {
-                // 입력한 텍스트를 localStorage에 저장
-                localStorage.setItem('userQuery', userInput);
-                // page3으로 이동
-                window.location.href = 'page3.html';
-            } else {
-                alert('내용을 입력해주세요.');
-            }
-        }
-        
-        // Enter 키로도 전송 가능하게
-        document.getElementById('userInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                submitQuery();
-            }
-        });
-    </script>
-</body>
+    <!-- API 연결 -->
+    <script src="js/api.js"></script>
+    <script src="js/page2.js"></script>
+</body> 
 </html>
+```
+
+---
+
+## 🔧 **주요 변경사항**
+
+### 1. ❌ **삭제한 것들:**
+- `<head>` 안의 Mock 데이터 script (중복!)
+- 맨 아래 inline script (중복!)
+- `onclick="submitQuery()"` (js 파일에서 처리)
+- `onclick="setInputText(...)"` (js 파일에서 처리)
+
+### 2. ✅ **수정한 것들:**
+- `<form id="queryForm">` 추가 (page2.js가 찾을 수 있게)
+- `<button type="submit">` (form 제출 방식)
+- `.chip` 버튼에서 onclick 제거 (js에서 자동 처리)
+
+### 3. ✅ **유지한 것들:**
+- `id="userInput"` ✅
+- script 태그 순서 ✅
+- 모든 HTML 구조 ✅
+
+---
+
+## 🎯 **이제 테스트!**
+
+### 1. **저장** (Ctrl + S)
+
+### 2. **브라우저에서 page2.html 열기**
+
+### 3. **F12 → Console 확인**
+
+다음 메시지들이 보여야 해요:
+```
+🔗 API Base URL: http://localhost:8000/api/v1
+🧪 Mock 모드: 활성화
+========================================
+🚀 Page 2 로드됨
+========================================
+📂 현재 localStorage 상태:
+  - recommendations: null
+  - userInput: null
+🎯 찾은 칩 개수: 3
+✅ Page 2 초기화 완료
+========================================
+```
+
+### 4. **텍스트 입력하고 제출!**
+
+Console에 이렇게 나와야 해요:
+```
+========================================
+📝 폼 제출 시작
+👤 사용자 입력: 인스타 마케팅 문구 작성
+📏 입력 길이: 17
+📡 API 호출 시작...
+🤖 AI 추천 요청: 인스타 마케팅 문구 작성
+🧪 Mock 데이터 사용
+✅ API 응답 받음
+💾 localStorage에 저장 중...
+✅ 저장 완료!
+🔄 Page 3으로 이동 중...
+========================================

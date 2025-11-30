@@ -142,6 +142,447 @@ header {
     opacity: 1;
 }
 
+/* ============================================ */
+/* 추가 온보딩 섹션들 스타일 */
+/* ============================================ */
+
+.onboarding-section {
+    min-height: 100vh;
+    padding: 80px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-badge {
+    display: inline-block;
+    padding: 8px 20px;
+    background: #E0E7FF;
+    color: #4F46E5;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 30px;
+}
+
+.section-title {
+    font-size: 42px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.3;
+    margin-bottom: 60px;
+    color: #000;
+}
+
+.highlight-text {
+    color: #4F46E5;
+}
+
+/* 배경 섹션 */
+.background-section {
+    background: white;
+}
+
+.reason-container {
+    max-width: 1100px;
+    width: 100%;
+    background: #E6E9FF;
+    border-radius: 30px;
+    padding: 60px 50px;
+}
+
+.reason-subtitle {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #1a1a1a;
+}
+
+.reason-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.reason-card {
+    background: #FFFFFF;
+    padding: 50px 40px;
+    border-radius: 20px;
+    border: 1px solid #C4C4C4;
+    text-align: center;
+}
+
+.reason-icon {
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+.reason-icon img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+.reason-card h4 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #4F46E5;
+    margin-bottom: 20px;
+}
+
+.reason-card p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.7;
+}
+
+/* 솔루션 섹션 */
+.solution-section {
+    background: white;
+    padding: 60px 20px 80px;
+}
+
+.solution-visual-container {
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    height: 600px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    margin-top: -20px;
+}
+
+.solution-image-back {
+    position: absolute;
+    left: 80px;
+    top: 0;
+    z-index: 1;
+    max-width: 500px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+}
+
+.solution-image-back img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.solution-image-front {
+    position: absolute;
+    right: 50px;
+    top: 80px;
+    z-index: 2;
+    max-width: 620px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+}
+
+.solution-image-front img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* 사용방법 섹션 */
+.howto-section {
+    background: #FAFAFA;
+}
+
+.howto-container {
+    max-width: 1100px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.howto-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sample-box {
+    background: #E5E7EB;
+    width: 100%;
+    aspect-ratio: 4/3;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+
+.sample-text {
+    text-align: center;
+    color: #6B7280;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+.howto-steps-timeline {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    padding-left: 40px;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 0;
+    top: 15px;
+    height: calc(100% - 100px);
+    width: 2px;
+    background: #4F46E5;
+}
+
+.step-item-timeline {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.step-dot {
+    position: absolute;
+    left: -40px;
+    top: 8px;
+    width: 16px;
+    height: 16px;
+    background: #4F46E5;
+    border-radius: 50%;
+    flex-shrink: 0;
+    z-index: 1;
+}
+
+.step-content-timeline h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.step-content-timeline p {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.7;
+}
+
+/* 기존 step 스타일 제거를 위한 추가 */
+.howto-steps {
+    display: none;
+}
+
+.step-item {
+    display: none;
+}
+
+/* 혁신 섹션 */
+.innovation-section {
+    background: white;
+}
+
+.innovation-section .section-title {
+    font-size: 48px;
+    font-weight: 800;
+}
+
+.innovation-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    max-width: 1100px;
+    width: 100%;
+}
+
+.innovation-card {
+    text-align: center;
+    padding: 40px 30px;
+}
+
+.innovation-icon {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.innovation-icon img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+.innovation-card h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+}
+
+.innovation-card p {
+    font-size: 16px;
+    color: #666;
+}
+
+/* 요금제 섹션 */
+.plan-section {
+    background: #FAFAFA;
+}
+
+.plan-container-onboarding {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 100px;
+}
+
+.plan-card-onboarding {
+    background: white;
+    border-radius: 20px;
+    padding: 50px 40px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s;
+}
+
+.plan-card-onboarding:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.plan-card-onboarding.premium-onboarding {
+    border: 2px solid #4F46E5;
+}
+
+.plan-header-onboarding {
+    margin-bottom: 30px;
+}
+
+.plan-header-onboarding h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #6B7280;
+    margin-bottom: 15px;
+}
+
+.price-onboarding {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+}
+
+.price-amount-onboarding {
+    font-size: 42px;
+    font-weight: 700;
+    color: #4F46E5;
+}
+
+.price-period-onboarding {
+    font-size: 18px;
+    color: #9CA3AF;
+}
+
+.plan-features-onboarding {
+    list-style: none;
+    margin-bottom: 40px;
+}
+
+.plan-features-onboarding li {
+    font-size: 16px;
+    color: #4B5563;
+    padding: 12px 0;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.plan-features-onboarding li:last-child {
+    border-bottom: none;
+}
+
+.plan-button-onboarding {
+    width: 100%;
+    padding: 18px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+}
+
+.plan-button-onboarding.primary-onboarding {
+    background: #4F46E5;
+    color: white;
+}
+
+.plan-button-onboarding.primary-onboarding:hover {
+    background: #4338CA;
+}
+
+.plan-button-onboarding.secondary-onboarding {
+    background: #E5E7EB;
+    color: #6B7280;
+    cursor: not-allowed;
+}
+
+/* Footer */
+.footer-onboarding {
+    width: 100%;
+    max-width: 1100px;
+    padding-top: 50px;
+    border-top: 1px solid #E5E7EB;
+    text-align: center;
+}
+
+.footer-logo-onboarding {
+    margin-bottom: 20px;
+}
+
+.footer-tagline-onboarding {
+    font-size: 14px;
+    color: #9CA3AF;
+    margin-top: 10px;
+}
+
+.footer-copyright-onboarding {
+    font-size: 14px;
+    color: #9CA3AF;
+    margin: 20px 0;
+}
+
+.footer-links-onboarding {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.footer-links-onboarding a {
+    font-size: 14px;
+    color: #6B7280;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links-onboarding a:hover {
+    color: #4F46E5;
+}
+
+/* ============================================ */
+/* 기존 페이지 2, 3, 4 스타일 유지 */
+/* ============================================ */
+
 /* 페이지 2: 입력 화면 */
 .page2 {
     background: linear-gradient(180deg, #E3F2FD 0%, #F5FAFF 20%, #ffffff 40%);
@@ -169,7 +610,6 @@ header {
     height: 100%;
 }
 
-/* 글자 포함 로고 (위에 배치용) */
 .navi-logo-with-text {
     margin-bottom: 30px;
 }
@@ -178,7 +618,6 @@ header {
     height: 60px;
 }
 
-/* 푸터 아이콘 로고 */
 .footer-logo-icon {
     margin-bottom: 10px;
 }
@@ -280,7 +719,7 @@ header {
     object-fit: cover;
 }
 
-/* 푸터 스타일 */
+/* 푸터 스타일 (기존) */
 footer {
     background: transparent;
     padding: 40px 20px;
@@ -410,21 +849,6 @@ footer {
     font-weight: 700;
 }
 
-.ai-description {
-    font-size: 13px;
-    color: #555;
-    line-height: 1.6;
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.tags {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-}
-
 .tag {
     background: #f0f0f0;
     padding: 5px 12px;
@@ -537,7 +961,7 @@ footer {
     background: #e0e0e0;
 }
 
-/* 페이지 4: 채팅 화면 (카톡 스타일) */
+/* 페이지 4: 채팅 화면 */
 .page4,
 .page5 {
     background: white;
@@ -554,7 +978,6 @@ footer {
     gap: 20px;
 }
 
-/* 사용자 메시지 (오른쪽) */
 .user-message-right {
     display: flex;
     justify-content: flex-end;
@@ -572,7 +995,6 @@ footer {
     text-align: left;
 }
 
-/* AI 메시지 (왼쪽) - 로딩중 */
 .ai-message-left {
     display: flex;
     gap: 12px;
@@ -599,7 +1021,6 @@ footer {
     color: #666;
 }
 
-/* 로딩 스피너 */
 .loading-spinner {
     width: 20px;
     height: 20px;
@@ -614,7 +1035,6 @@ footer {
     100% { transform: rotate(360deg); }
 }
 
-/* AI 응답 (왼쪽) - 최종 답변 */
 .ai-response-left {
     display: flex;
     gap: 12px;
@@ -658,7 +1078,6 @@ footer {
     color: #666;
 }
 
-/* 하단 AI 로고들 */
 .bottom-logos {
     padding: 60px 20px 40px;
     text-align: center;
@@ -689,6 +1108,42 @@ footer {
     .ai-cards {
         grid-template-columns: 1fr;
     }
+    
+    .reason-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .howto-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .innovation-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .plan-container-onboarding {
+        grid-template-columns: 1fr;
+    }
+    
+    .solution-visual-container {
+        height: auto;
+        flex-direction: column;
+        gap: 30px;
+        padding: 40px 20px;
+    }
+    
+    .solution-image-back,
+    .solution-image-front {
+        position: relative;
+        left: 0;
+        right: 0;
+        transform: none;
+        max-width: 100%;
+    }
+    
+    .howto-steps-timeline {
+        padding-left: 30px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -700,6 +1155,10 @@ footer {
     
     .main-title {
         font-size: 40px;
+    }
+    
+    .section-title {
+        font-size: 32px;
     }
     
     .recommendation-title {
@@ -729,5 +1188,10 @@ footer {
     .user-message-right p,
     .ai-response-content {
         max-width: 85%;
+    }
+    
+    .cta-button {
+        padding: 16px 60px;
+        font-size: 16px;
     }
 }

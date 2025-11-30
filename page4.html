@@ -3,71 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NAVI - Claude 응답</title>
+    <title>NAVI - AI 응답</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="page page4">
         <!-- 왼쪽 상단 NAVI 글자 로고 -->
-        <!-- 왼쪽 상단 NAVI 글자 로고 -->
-<a href="index.html" class="logo-text-only" style="text-decoration: none; color: #1a3c8c;">NAVI</a>
+        <a href="index.html" class="logo-text-only" style="text-decoration: none; color: #1a3c8c;">NAVI</a>
+        
         <main class="chat-content-new">
             <!-- 사용자 메시지 (오른쪽) -->
             <div class="user-message-right">
-                <p>
-                    우리 브랜드의 핵심 가치는 지속가능성과 혁신입니다. 이를 반영한 인스타그램<br>
-                    마케팅 캠페인 문구 3개를 제안해주세요. 각 문구는 감성적이어서도 편트점되<br>
-                    어야 합니다.
-                </p>
+                <p id="userPrompt">프롬프트가 여기에 표시됩니다.</p>
             </div>
 
             <!-- AI 응답 생성중 (왼쪽) -->
             <div class="ai-message-left" id="loadingMessage">
-    <div class="ai-profile">
-        <img src="images/logo_navi.svg" alt="NAVI">
-    </div>
+                <div class="ai-profile">
+                    <img src="images/logo_navi.svg" alt="NAVI">
+                </div>
                 <div class="ai-message-content">
-                    <span>Claude Sonnet 4.5 올 답변을 생성하는 중</span>
+                    <span id="loadingText">AI가 답변을 생성하는 중</span>
                     <div class="loading-spinner"></div>
                 </div>
             </div>
 
             <!-- AI 최종 응답 (왼쪽, 처음에는 숨김) -->
             <div class="ai-response-left" id="finalResponse" style="display: none;">
-    <div class="ai-profile">
-        <img src="images/logo_navi.svg" alt="NAVI">
-    </div>
-                <div class="ai-response-content">
-                    <p>지속가능성과 혁신을 핵심으로 하는 브랜드를 위한 인스타그램 캠페인 문구 3개를 제안해드리겠습니다.</p>
-
-                    <h3>1. "내일을 위한 선택, 오늘부터 시작됩니다"</h3>
-                    <p>
-                        환경을 생각한 제품을 만든 것이 아니라, 자속 가능한 미래를 실행하디. 획<br>
-                        산적인 기술이 똑같은 생산에 머물지 않고 반성한 우리의 주무익 즉주적 차은<br>
-                        선택이 만드는 큰 변화를 경험하세요.
-                    </p>
-                    <p class="hashtag">#지속가능한선택 #내일을위한행동</p>
-
-                    <h3>2. "자연과 기술이 만난 식제, 그조와 우리가 있습니다"</h3>
-                    <p>
-                        혁신은 자연을 파괴하는 것이 아니라, 자연과 조화를 이루는 것입니다. 우리는<br>
-                        최첨단 기술로 지구를 보호하며, 너 나은 내일을 약속합니다. 지속 가능성과 혁<br>
-                        신, 두 가치가 하나로 어우러진 우리와 여행을 함께하세요.
-                    </p>
-                    <p class="hashtag">#자연과기술의조화 #지속가능한혁신</p>
-
-                    <h3>3. "변화는 선택이 아닌 책임입니다"</h3>
-                    <p>
-                        우리는 혁신을 통해 환경에 대한 책임을 다합니다. 단계는 미래보다는 기술민드로<br>
-                        탄신 우리가 갉곤 권리, 순환 경제를 실현하며, 더큰 세대에게 더 나는 지구를 물<br>
-                        려주기 위해 노력합니다. 지속 가능한 혁신입니다.
-                    </p>
-                    <p class="hashtag">#환경보호의무 #지속가능성</p>
-
-                    <p class="closing">
-                        각 문구는 감성적인 호소와 핵랍 브랜드의 전문성과 전반성을 잘이 묘르 교체적<br>
-                        수 있도록 운영되어엎 오 있듭 구경해보십니다.
-                    </p>
+                <div class="ai-profile">
+                    <img src="images/logo_navi.svg" alt="NAVI">
+                </div>
+                <div class="ai-response-content" id="aiResponseContent">
+                    <p>응답이 여기에 표시됩니다.</p>
                 </div>
             </div>
         </main>
@@ -101,13 +68,170 @@
     </div>
 
     <script>
-        // 2초 후 로딩 메시지 숨기고 최종 응답 및 하단 요소들 표시
-        setTimeout(function() {
-            document.getElementById('loadingMessage').style.display = 'none';
-            document.getElementById('finalResponse').style.display = 'flex';
-            document.getElementById('bottomLogos').style.display = 'block';
-            document.getElementById('footerSection').style.display = 'block';
-        }, 2000);
+    console.log('========================================');
+    console.log('🚀 Page 4 로드됨');
+    console.log('========================================');
+
+    window.addEventListener('DOMContentLoaded', function() {
+        // 1. 저장된 데이터 불러오기
+        const selectedAI = localStorage.getItem('selectedAI');
+        const selectedPrompt = localStorage.getItem('selectedPrompt');
+        const selectedToolUrl = localStorage.getItem('selectedToolUrl');
+        const aiResultRaw = localStorage.getItem('aiResult');
+        
+        console.log('📦 저장된 데이터:');
+        console.log('  - selectedAI:', selectedAI);
+        console.log('  - selectedPrompt:', selectedPrompt);
+        console.log('  - aiResult:', aiResultRaw);
+        
+        // 2. 데이터 없으면 page2로 이동
+        if (!selectedPrompt) {
+            alert('결과가 없습니다. Page 2로 돌아갑니다.');
+            window.location.href = 'page2.html';
+            return;
+        }
+        
+        // 3. 사용자 메시지 표시
+        document.getElementById('userPrompt').textContent = selectedPrompt;
+        
+        // 4. 로딩 메시지에 AI 이름 표시
+        document.getElementById('loadingText').textContent = 
+            `${selectedAI || 'AI'}이(가) 답변을 생성하는 중`;
+        
+        // 5. AI 응답 처리
+        if (aiResultRaw) {
+            try {
+                const aiResult = JSON.parse(aiResultRaw);
+                console.log('✅ AI 응답 파싱 완료:', aiResult);
+                
+                // 실제 API 응답 표시
+                displayAIResponse(selectedAI, aiResult);
+                
+            } catch (error) {
+                console.error('❌ AI 응답 파싱 에러:', error);
+                displayErrorResponse(selectedAI, selectedPrompt);
+            }
+        } else {
+            console.log('⚠️ AI 응답 없음 - 에러 메시지 표시');
+            displayErrorResponse(selectedAI, selectedPrompt);
+        }
+    });
+
+    /**
+     * 실제 API 응답을 화면에 표시
+     */
+    function displayAIResponse(aiName, result) {
+        console.log('🎨 AI 응답 표시 중...');
+        
+        // 로딩 숨기고 응답 표시
+        document.getElementById('loadingMessage').style.display = 'none';
+        document.getElementById('finalResponse').style.display = 'flex';
+        document.getElementById('bottomLogos').style.display = 'block';
+        document.getElementById('footerSection').style.display = 'block';
+        
+        // 응답 내용 추출
+        let responseText = '';
+        
+        // 백엔드 응답 구조에 맞게 처리
+        // result.response가 { type: "text", text: "..." } 형태
+        if (result.response) {
+            if (typeof result.response === 'string') {
+                responseText = result.response;
+            } else if (result.response.type === 'text') {
+                responseText = result.response.text;
+            } else if (result.response.type === 'multimodal') {
+                // 멀티모달 응답 처리
+                responseText = result.response.content
+                    .filter(item => item.type === 'text')
+                    .map(item => item.text)
+                    .join('\n\n');
+                    
+                // 이미지가 있으면 추가
+                const images = result.response.content.filter(item => item.type === 'image');
+                if (images.length > 0) {
+                    responseText += '\n\n[이미지가 생성되었습니다]';
+                }
+            }
+        } else if (result.text) {
+            responseText = result.text;
+        } else if (result.message) {
+            responseText = result.message;
+        }
+        
+        console.log('📝 추출된 응답:', responseText.substring(0, 100) + '...');
+        
+        // 응답 HTML 생성
+        const responseContent = document.getElementById('aiResponseContent');
+        
+        // 마크다운 스타일 변환 (간단한 버전)
+        let formattedResponse = formatResponse(responseText, aiName);
+        
+        responseContent.innerHTML = formattedResponse;
+        
+        console.log('✅ AI 응답 표시 완료');
+    }
+
+    /**
+     * 응답 텍스트를 HTML로 포맷
+     */
+    function formatResponse(text, aiName) {
+        if (!text) {
+            return `<p>${aiName || 'AI'}의 응답을 불러올 수 없습니다.</p>`;
+        }
+        
+        // 줄바꿈을 <br> 또는 <p>로 변환
+        let html = '';
+        
+        // 제목 패턴 감지 (1. 2. 3. 또는 **제목**)
+        const lines = text.split('\n');
+        
+        lines.forEach(line => {
+            line = line.trim();
+            if (!line) {
+                html += '<br>';
+                return;
+            }
+            
+            // 번호 제목 (1. 2. 3.)
+            if (/^\d+\.\s/.test(line)) {
+                html += `<h3>${line}</h3>`;
+            }
+            // 해시태그
+            else if (line.startsWith('#') && !line.startsWith('##')) {
+                html += `<p class="hashtag">${line}</p>`;
+            }
+            // 일반 텍스트
+            else {
+                html += `<p>${line}</p>`;
+            }
+        });
+        
+        return html;
+    }
+
+    /**
+     * 에러 시 표시할 메시지
+     */
+    function displayErrorResponse(aiName, prompt) {
+        document.getElementById('loadingMessage').style.display = 'none';
+        document.getElementById('finalResponse').style.display = 'flex';
+        document.getElementById('bottomLogos').style.display = 'block';
+        document.getElementById('footerSection').style.display = 'block';
+        
+        const responseContent = document.getElementById('aiResponseContent');
+        responseContent.innerHTML = `
+            <p>⚠️ AI 응답을 가져오는 중 문제가 발생했습니다.</p>
+            <p>입력하신 프롬프트: "${prompt}"</p>
+            <br>
+            <p>다시 시도해주세요.</p>
+            <button onclick="window.location.href='page3.html'" 
+                    style="padding: 10px 20px; margin-top: 20px; cursor: pointer;">
+                ← 다시 시도하기
+            </button>
+        `;
+    }
+
+    console.log('✅ Page 4 초기화 완료');
     </script>
 </body>
 </html>
