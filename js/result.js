@@ -62,7 +62,7 @@ function renderAIResult(response) {
 
             // IMAGE
             else if (part.type === "image") {
-                renderImagePath(part.url, container);
+                renderImageUrl(part.url, container);
             }
 
             // ERROR
@@ -80,17 +80,12 @@ function renderAIResult(response) {
     container.innerText = "지원되지 않는 결과 형식입니다.";
 }
 
-function toPublicURL(filePath) {
-    const filename = filePath.split("\\").pop().split("/").pop();
-    return `http://127.0.0.1:8000/images/${filename}`;
-}
-
-function renderImagePath(path, container) {
+function renderImageUrl(url, container) {
 
     const img = document.createElement("img");
 
-    // Django가 서빙하는 URL로 변경
-    img.src = toPublicURL(part.file_path);
+    // Django MEDIA url 그대로 사용
+    img.src = `http://127.0.0.1:8000${url}`;
 
     img.style.maxWidth = "100%";
     img.style.borderRadius = "12px";
@@ -98,6 +93,7 @@ function renderImagePath(path, container) {
 
     container.appendChild(img);
 }
+
 
 
 
