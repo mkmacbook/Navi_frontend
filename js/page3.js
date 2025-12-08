@@ -5,184 +5,96 @@ console.log('🚀 Page 3 로드됨');
 console.log('========================================');
 
 // 페이지 로드 시 데이터 표시
-window.addEventListener('DOMContentLoaded', function() {
-    console.log('📖 DOM 로드 완료');
-    
-    // localStorage에서 데이터 불러오기
-    const savedData = localStorage.getItem('recommendations');
-    const userInput = localStorage.getItem('userInput');
-    
-    console.log('📦 저장된 데이터 확인:');
-    console.log('  - recommendations:', savedData ? '있음' : '없음');
-    console.log('  - userInput:', userInput);
-    
-    // 제목 업데이트
-    const pageTitle = document.getElementById('pageTitle');
-    if (pageTitle && userInput) {
-        pageTitle.textContent = `"${userInput}"`;
-    }
-    
-    if (!savedData) {
-        console.error('❌ 추천 데이터 없음 - Page 2로 리다이렉트');
-        alert('데이터가 없습니다. 입력 페이지로 돌아갑니다.');
-        window.location.href = 'page2.html';
+window.addEventListener("DOMContentLoaded", () => {
+    console.log("📖 DOM Loaded");
+
+    const saved = localStorage.getItem("recommendations");
+    const userInput = localStorage.getItem("userInput");
+
+    if (!saved || !userInput) {
+        alert("추천 데이터가 없습니다.");
+        window.location.href = "page2.html";
         return;
     }
-    
-    try {
-        console.log('🔄 JSON 파싱 중...');
-        const data = JSON.parse(savedData);
-        console.log('✅ 파싱 완료:', data);
-        console.log('📋 데이터 키들:', Object.keys(data));
-        
-        console.log('🎨 화면에 표시 시작...');
-        displayRecommendations(data);
-        console.log('✅ 화면 표시 완료!');
-        
-    } catch (error) {
-        console.error('❌ JSON 파싱 에러:', error);
-        alert('데이터를 불러오는 중 오류가 발생했습니다.');
-        window.location.href = 'page2.html';
+
+    const data = JSON.parse(saved);
+
+    console.log("✅ Recommend Response:", data);
+
+    document.getElementById("pageTitle").textContent = `"${userInput}"`;
+
+    if (!Array.isArray(data.recommendations)) {
+        console.error("❌ recommendations missing:", data);
+        alert("추천 데이터 형식 오류");
+        return;
     }
+
+    displayRecommendations(data.recommendations, userInput);
 });
 
-/**
- * AI 추천 결과를 화면에 표시
- * 
- * 백엔드 응답 구조:
- * {
- *   "situation": {...},
- *   "recommendations": [
- *     {
- *       "recommendation": { "id": "...", "tool_id": "...", "reasoning": "..." },
- *       "prompt_suggestion": { "prompt_text": "..." },
- *       "tool_name": "ChatGPT",  // API에서 추가됨
- *       "tool_url": "https://..."  // API에서 추가됨
- *     }
- *   ]
- * }
- */
-function displayRecommendations(data) {
-    console.log('--- displayRecommendations 함수 시작 ---');
-    console.log('받은 데이터:', data);
-    
-    // 백엔드 응답 구조에서 recommendations 찾기
-    let recommendations = data.recommendations || data.tools || [];
-    
-    console.log('🔍 찾은 recommendations:', recommendations);
-    
-    if (!Array.isArray(recommendations) || recommendations.length === 0) {
-        console.error('❌ recommendations가 없거나 비어있습니다');
-        console.error('   전체 데이터:', JSON.stringify(data, null, 2));
-        alert('추천 데이터가 없습니다.');
-        return;
-    }
-    
-    console.log('📊 추천 항목 개수:', recommendations.length);
-    
-    // AI 카드 요소들 찾기
-    const cards = document.querySelectorAll('.ai-card');
-    console.log('🎴 찾은 카드 개수:', cards.length);
-    
-    if (cards.length === 0) {
-        console.error('❌ AI 카드를 찾을 수 없습니다!');
-        return;
-    }
-    
-    // 사용자 입력 가져오기
-    const userInput = localStorage.getItem('userInput') || '작업';
-    
-    // 각 추천 항목을 카드에 표시
+
+function displayRecommendations(recommendations, userInput) {
+
+    const cards = document.querySelectorAll(".ai-card");
+
     recommendations.forEach((rec, index) => {
-        console.log(`\n카드 ${index + 1} 처리 중:`);
-        console.log('  - 전체 데이터:', rec);
-        
-        if (cards[index]) {
-            updateCard(cards[index], rec, index, userInput);
-            console.log(`✅ 카드 ${index + 1} 업데이트 완료`);
-        } else {
-            console.warn(`⚠️ 카드 ${index + 1}이 없습니다`);
-        }
+        if (cards[index]) updateCard(cards[index], rec, userInput);
     });
-    
-    console.log('--- displayRecommendations 함수 종료 ---\n');
 }
 
-/**
- * 개별 카드 업데이트
- * 
- * 백엔드 응답의 각 recommendation 구조:
- * {
- *   "recommendation": { "reasoning": "..." },
- *   "prompt_suggestion": { "prompt_text": "..." },
- *   "tool_name": "ChatGPT",
- *   "tool_url": "https://..."
- * }
- */
-function updateCard(card, rec, index, userInput) {
-    // ✅ 백엔드 구조에 맞게 데이터 추출
-    // rec.recommendation.reasoning 또는 rec.reasoning
-    const reasoning = rec.recommendation?.reasoning || rec.reasoning || rec.description || '추천된 AI 도구입니다.';
-    
-    // rec.prompt_suggestion.prompt_text 또는 rec.prompt
-    const promptText = rec.prompt_suggestion?.prompt_text || rec.prompt || rec.template || '';
-    
-    // rec.tool_name (API에서 추가됨)
-    const toolName = rec.tool_name || rec.name || 'AI Tool';
-    
-    // rec.tool_url (API에서 추가됨)
-    const toolUrl = rec.tool_url || rec.url || '';
-    
-    console.log(`  - tool_name: ${toolName}`);
-    console.log(`  - reasoning: ${reasoning.substring(0, 30)}...`);
-    console.log(`  - prompt: ${promptText.substring(0, 30)}...`);
-    
-    // AI 이름 설정
-    const nameElement = card.querySelector('.ai-name');
-    if (nameElement) {
-        nameElement.textContent = toolName;
-        console.log(`  ✓ 이름 설정: ${toolName}`);
-        
-        // 로고 이미지도 업데이트
-        updateLogo(card, toolName);
+
+async function refinePrompt(query, toolName) {
+    const res = await fetch("http://127.0.0.1:8000/api/v1/situations/refine-prompt/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            query: query,
+            tool_name: toolName
+        })
+    });
+
+    const data = await res.json();
+
+    if (data.refined_prompt?.refined_prompt_text) {
+        return data.refined_prompt.refined_prompt_text;
     }
-    
-    // 설명 (reasoning) 설정
-    const descElement = card.querySelector('.ai-description');
-    if (descElement) {
-        descElement.textContent = reasoning;
-        console.log(`  ✓ 설명 설정 완료`);
-    }
-    
-    // 태그 업데이트
-    updateTags(card, toolName);
-    
-    // 프롬프트 설정
-    const promptElement = card.querySelector('.prompt-text-editable');
-    if (promptElement) {
-        if (promptText) {
-            promptElement.value = promptText;
-        } else {
-            // 프롬프트가 없으면 기본 프롬프트 생성
-            promptElement.value = `${userInput}을(를) 도와주세요.\n\n구체적이고 창의적인 결과물을 만들어주세요.`;
-        }
-        console.log(`  ✓ 프롬프트 설정 완료`);
-    }
-    
-    // tool_url 저장 (나중에 사용)
-    if (toolUrl) {
-        card.dataset.toolUrl = toolUrl;
-        console.log(`  ✓ URL 저장: ${toolUrl}`);
-    }
-    
-    // tool_id 저장
-    if (rec.recommendation?.tool_id) {
-        card.dataset.toolId = rec.recommendation.tool_id;
-    }
-    
-    // 카드 활성화
-    card.classList.add('loaded');
+
+    return null;
 }
+
+function updateCard(card, rec, userInput) {
+
+    const toolName = rec.tool_name;
+    const toolUrl = rec.tool_url;
+    const reasoning = rec.reasoning || "추천된 AI 도구입니다.";
+
+    console.log(`업데이트 중인 card: ${toolName}`);
+
+    // ===== NAME =====
+    card.querySelector(".ai-name").textContent = toolName;
+
+    // ===== DESCRIPTION =====
+    card.querySelector(".ai-description").textContent = reasoning;
+
+    // ===== LOGO + TAGS =====
+    updateLogo(card, toolName);
+    updateTags(card, toolName);
+
+    // ===== PROMPT FIELD =====
+    const promptBox = card.querySelector(".prompt-text-editable");
+    promptBox.value = "프롬프트 생성 중...";
+
+    refinePrompt(userInput, toolName).then(refined => {
+        promptBox.value = refined || `${userInput}을(를) 도와주세요.`;
+    });
+
+    // ===== DATASET =====
+    card.dataset.toolUrl = toolUrl;
+    card.dataset.toolId = rec.tool_id || "";
+
+    card.classList.add("loaded");
+}
+
 
 /**
  * AI 이름에 따라 로고 이미지 업데이트

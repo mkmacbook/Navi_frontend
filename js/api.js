@@ -95,13 +95,29 @@ async function getRecommendations(situation) {
  * 2. 프롬프트 개선 API
  * POST /api/v1/situations/refine-prompt/
  */
-async function refinePrompt(prompt) {
-    console.log('✨ 프롬프트 개선 요청:', prompt);
-    
-    return await callAPI('/situations/refine-prompt/', 'POST', {
-        prompt: prompt
-    });
+async function refinePrompt(query, toolName) {
+
+    try {
+        const res = await fetch("http://127.0.0.1:8000/api/v1/situations/refine-prompt/", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                query: query,
+                tool_name: toolName
+            })
+        });
+
+        const data = await res.json();
+        console.log("Refined Prompt:", data);
+
+        return data.refined_prompt?.refined_prompt_text || null;
+
+    } catch (err) {
+        console.error("refinePrompt failed:", err);
+        return null;
+    }
 }
+
 
 /**
  * 3. AI 인라인 실행 API
